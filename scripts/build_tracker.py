@@ -68,18 +68,18 @@ for name, rows in sheets.items():
             cell.alignment = Alignment(vertical="top", wrap_text=True)
     ws.row_dimensions[1].height = 26
 
-# Data validation lists refer to SETTINGS values.
+# Inline validation values keep the workbook portable in Excel and Google Sheets.
 validations = {
-    "CLIENT REGISTER": [("H2:H500", "'SETTINGS'!$A$2:$A$5"), ("G2:G500", "'SETTINGS'!$B$2:$B$4")],
-    "SESSION LOG": [("H2:H500", "'SETTINGS'!$C$2:$C$4"), ("E2:E500", "'SETTINGS'!$B$2:$B$4")],
-    "PAYMENT REGISTER": [("F2:F500", "'SETTINGS'!$D$2:$D$4")],
-    "PROGRESS TRACKER": [("G2:G500", "'SETTINGS'!$E$2:$E$3")],
-    "NUTRITION LOG": [("H2:H500", "'SETTINGS'!$E$2:$E$3")]
+    "CLIENT REGISTER": [("H2:H500", '"Lead,Active,On hold,Archived"'), ("G2:G500", '"In-person,Online,Hybrid"')],
+    "SESSION LOG": [("H2:H500", '"Scheduled,Completed,Cancelled"'), ("E2:E500", '"In-person,Online,Hybrid"')],
+    "PAYMENT REGISTER": [("F2:F500", '"Pending,Paid,Overdue"')],
+    "PROGRESS TRACKER": [("G2:G500", '"Yes,No"')],
+    "NUTRITION LOG": [("H2:H500", '"Yes,No"')]
 }
 for sheet, rules in validations.items():
     ws = wb[sheet]
     for target, formula in rules:
-        dv = DataValidation(type="list", formula1=f"={formula}", allow_blank=True)
+        dv = DataValidation(type="list", formula1=formula, allow_blank=True)
         ws.add_data_validation(dv)
         dv.add(target)
 
